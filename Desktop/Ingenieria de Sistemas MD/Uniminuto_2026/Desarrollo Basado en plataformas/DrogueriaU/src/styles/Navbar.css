@@ -1,0 +1,29 @@
+.titulo, a{
+  color:white;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  font-size: 20px;
+}
+
+a:hover{
+    background: #716f6d;
+    padding: 5px;
+    border-radius: 5px;
+}
+*{
+  margin:0;
+  padding:0;
+  box-sizing:border-box;
+}
+.options{
+    margin-right: 25px;
+}
+.options a{
+  text-decoration: none;
+  color: white;
+  font-weight: 500;
+  margin-left: 20px;
+}
+
+.options a:hover{
+  opacity: 0.8;
+}
