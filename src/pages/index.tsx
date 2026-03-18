@@ -1,4 +1,4 @@
-import "../components/Navbar" 
+
 /*import bnr from "../img/Calle80.png" */
 import "../styles/Navbar.css"
 

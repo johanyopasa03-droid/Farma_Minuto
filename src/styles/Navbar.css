@@ -27,3 +27,13 @@ a:hover{
 .options a:hover{
   opacity: 0.8;
 }
+
+.buscador, input{
+  padding: 5px;
+  display: flex;
+  width: 500px;
+  border-radius: 5px;
+  text-decoration: "none";
+  margin: 0;
+  border: 0;
+}
