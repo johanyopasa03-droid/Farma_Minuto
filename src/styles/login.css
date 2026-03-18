@@ -1,0 +1,117 @@
+/* FONDO TIPO MODAL */
+
+.login-overlay{
+
+  display:flex;
+  justify-content:center;
+  align-items:center;
+
+  height:80vh;
+}
+
+/* CONTENEDOR */
+
+.login-modal{
+
+  display:grid;
+  grid-template-columns: 1fr 1fr;
+
+  width:900px;
+  background:white;
+
+  border-radius:12px;
+
+  overflow:hidden;
+
+  box-shadow:0 10px 30px rgba(0,0,0,0.15);
+}
+
+/* COLUMNA IZQUIERDA */
+
+.login-left{
+
+  background:#e8f5e9;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+}
+
+.login-left img{
+
+  width:100%;
+  height:100%;
+  object-fit:cover;
+}
+
+/* COLUMNA DERECHA */
+
+.login-right{
+
+  padding:40px;
+
+  display:flex;
+  flex-direction:column;
+}
+
+.login-right h2{
+
+  color:#0a6aa4;
+  margin-bottom:20px;
+}
+
+/* INPUTS */
+
+.login-right input{
+
+  padding:12px;
+  margin-bottom:15px;
+
+  border-radius:25px;
+  border:1px solid #ddd;
+
+  font-size:14px;
+}
+
+/* BOTON LOGIN */
+
+.login-btn{
+
+  background:#0a6aa4;
+  color:white;
+
+  padding:12px;
+
+  border:none;
+  border-radius:25px;
+
+  font-weight:bold;
+  margin-top:10px;
+
+  cursor:pointer;
+}
+
+/* BOTON REGISTRO */
+
+.register-btn{
+
+  margin-top:10px;
+
+  background:white;
+  color:#0a6aa4;
+
+  border:2px solid #0a6aa4;
+  padding:12px;
+
+  border-radius:25px;
+
+  cursor:pointer;
+}
+
+/* OLVIDE CONTRASEÑA */
+
+.forgot{
+
+  margin-top:15px;
+  font-size:13px;
+  color:#0a6aa4;
+}
