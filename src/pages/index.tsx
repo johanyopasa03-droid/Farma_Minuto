@@ -1,13 +1,12 @@
 
-/*import bnr from "../img/Calle80.png" */
+import bnr from "../img/promo.jpg" 
 import "../styles/Navbar.css"
+import "../styles/banner.css"
 
 function Index (){
 return(
-<div className="container">
-    <div className="banner">
-       {/*  <img src={bnr}></img> */}
-    </div>
+<div>
+  
 </div>
 )
 }

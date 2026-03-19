@@ -1,4 +1,4 @@
-import logo from "..//img/Logo.png"
+import logo from "..//img/Logo-blank.png"
 import "../styles/Navbar.css"
 
 
@@ -19,9 +19,9 @@ function Navbar({ carrito, busqueda, setBusqueda }: Props) {
         justifyContent:"space-between",
         color:"white"
       }}>
-      <img src={logo} width="150px"/>
+      <img src={logo} />
 
-    <h2 className="titulo">Farmaminuto</h2>
+  
       <div className="buscador">
         <input type="search" placeholder="Buscar Productos" value={busqueda} onChange={(e)=> setBusqueda(e.target.value)}/>
       </div>

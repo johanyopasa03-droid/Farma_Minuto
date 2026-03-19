@@ -40,7 +40,6 @@ export default function Login() {
         <div className="login-right">
           <h2>Bienvenido a Farmaminuto</h2>
 
-          {/* 🔥 FORM */}
           <form onSubmit={manejarLogin}>
 
             <label>Email</label>
@@ -58,8 +57,6 @@ export default function Login() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
-
-            {/* 🔥 MENSAJE */}
             {mensaje && <p style={{color: "red"}}>{mensaje}</p>}
 
             <button type="submit" className="login-btn">

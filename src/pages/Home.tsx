@@ -1,5 +1,7 @@
 import Producto from "../components/Producto"
-import { useState } from "react"
+import Banner from "../components/Banner"
+import Footer from "../components/footer"
+import "../styles/banner.css"
 
 interface Props {
   agregarAlCarrito: () => void
@@ -93,18 +95,18 @@ const productosFiltrados = productos.filter(producto =>
 )
 
   return (
-
-    <div style={{ padding: "20px" }}>
-
+ 
+    <div>
+<Banner />
       <h1 style={{ textAlign: "center", color: "#0a7cff" }}>
         Productos
       </h1>
 
       <div style={{
         display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+        gridTemplateColumns: "repeat(auto-fit, minmax(200px, 3fr))",
         gap: "20px",
-        padding: "20px"
+        padding: "10px"
       }}>
 
         {productosFiltrados.map((p) => (
@@ -117,7 +119,7 @@ const productosFiltrados = productos.filter(producto =>
           />
         ))}
       </div>
-
+<Footer/>
     </div>
   )
 }

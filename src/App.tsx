@@ -5,6 +5,7 @@ import Home from "./pages/Home"
 import Navbar from "./components/Navbar"
 import Index from "./pages/index"
 import Registro from "./pages/Registro"
+import Banner from "./components/banner"
 
 function App() {
   const [carrito, setCarrito] = useState(0)
@@ -21,8 +22,9 @@ function App() {
         <Route path="/Home" element={
         <Home agregarAlCarrito={agregarAlCarrito} busqueda={busqueda}  />} /> 
         <Route path="/index" element={<Index />} />
+        <Route path="/" element={<Banner />} />
         <Route path="/Registro" element={<Registro />} />
-
+{/*  <Route path="/" element={<Home agregarAlCarrito={agregarAlCarrito} busqueda={busqueda}/>} />  */}
       </Routes>
 
     </BrowserRouter>

@@ -1,39 +1,84 @@
-.titulo, a{
-  color:white;
-  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
-  font-size: 20px;
+img{
+height: 45px;
+padding: 2px;
+width: auto;
 }
-
-a:hover{
-    background: #716f6d;
-    padding: 5px;
-    border-radius: 5px;
-}
-*{
-  margin:0;
-  padding:0;
-  box-sizing:border-box;
-}
-.options{
-    margin-right: 25px;
-}
-.options a{
-  text-decoration: none;
-  color: white;
-  font-weight: 500;
-  margin-left: 20px;
-}
-
-.options a:hover{
-  opacity: 0.8;
-}
-
-.buscador, input{
-  padding: 5px;
+.navbar {
+  background: #0a6aa4;
   display: flex;
+  align-items: center;
+  justify-content: space-between;
+  color: white;
+  flex-wrap: wrap;
+  gap: 10px;
+  position: relative;
+}
+.buscador input {
+  padding: 8px 14px;
+  border-radius: 20px;
+  border: none;
+  outline: none;
   width: 500px;
-  border-radius: 5px;
-  text-decoration: "none";
-  margin: 0;
-  border: 0;
+  font-size: 0.9rem;
+}
+
+.options {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.options a {
+  color: white;
+  text-decoration: none;
+  font-size: 0.95rem;
+}
+
+
+.carrito-badge {
+  background: white;
+  color: #0a7cff;
+  padding: 5px 12px;
+  border-radius: 20px;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+@media (max-width: 768px) {
+  .navbar {
+    flex-wrap: wrap;
+  }
+
+  .buscador {
+    order: 3;
+    width: 100%;
+  }
+
+  .buscador input {
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .options {
+    display: none;
+    flex-direction: column;
+    align-items: flex-start;
+    width: 100%;
+    order: 4;
+    gap: 12px;
+    padding: 10px 0;
+  }
+
+  .options.abierto {
+    display: flex;
+  }
+}
+
+@media (max-width: 480px) {
+  .titulo {
+    font-size: 1rem;
+  }
+
+  .navbar-brand img {
+    width: 90px;
+  }
 }
