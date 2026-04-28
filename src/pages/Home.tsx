@@ -2,6 +2,7 @@ import Producto from "../components/Producto"
 import Banner from "../components/Banner"
 import Footer from "../components/footer"
 import "../styles/banner.css"
+import "../styles/productos.css"
 
 interface Props {
   agregarAlCarrito: () => void
@@ -98,10 +99,6 @@ const productosFiltrados = productos.filter(producto =>
  
     <div>
 <Banner />
-      <h1 style={{ textAlign: "center", color: "#0a7cff" }}>
-        Productos
-      </h1>
-
       <div style={{
         display: "grid",
         gridTemplateColumns: "repeat(auto-fit, minmax(200px, 3fr))",

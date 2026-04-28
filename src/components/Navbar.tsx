@@ -19,7 +19,7 @@ function Navbar({ carrito, busqueda, setBusqueda }: Props) {
         justifyContent:"space-between",
         color:"white"
       }}>
-      <img src={logo} />
+      <a href="https://www.uniminuto.edu/" target="blank">  <img src={logo} /> </a>
 
   
       <div className="buscador">

@@ -1,3 +1,5 @@
+import "../styles/productos.css"
+
 interface Props {
   nombre: string
   precio: number
@@ -6,61 +8,15 @@ interface Props {
 }
 
 function Producto({ nombre, precio, imagen, agregarAlCarrito }: Props) {
-
   return (
-
-    <div
-      style={{
-        minWidth: "200px",
-        borderRadius: "12px",
-        padding: "15px",
-        boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
-        textAlign: "center",
-        background: "white",
-        cursor: "pointer",
-        transition: "0.3s"
-      }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.transform = "scale(1.05)"
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.transform = "scale(1)"
-      }}
-    >
-
-      <img
-        src={imagen}
-        alt={nombre}
-        style={{
-          width: "100%",
-          height: "150px",
-          objectFit: "cover",
-          borderRadius: "10px"
-        }}
-      />
-
+    <div className="producto-card">
+      <img src={imagen} alt={nombre} />
       <h3>{nombre}</h3>
-
-      <p style={{ color: "green", fontWeight: "bold" }}>
-        ${precio}
-      </p>
-
-      <button
-        onClick={agregarAlCarrito}
-        style={{
-          background: "#0a7cff",
-          color: "white",
-          border: "none",
-          padding: "10px",
-          borderRadius: "8px",
-          cursor: "pointer"
-        }}
-      >
+      <p className="producto-precio">${precio.toLocaleString()}</p>
+      <button className="producto-btn" onClick={agregarAlCarrito}>
         🛒 Comprar
       </button>
-
     </div>
-
   )
 }
 
