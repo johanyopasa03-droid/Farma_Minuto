@@ -1,98 +1,428 @@
-/* CONTENEDOR GENERAL */
+/* ─────────────────────────────────────────────────────────────────────────────
+   registroCliente.css
+   Coloca este archivo en: src/styles/registroCliente.css
+   Todas las clases usan el prefijo "rc-" para evitar conflictos con otros estilos.
+   ───────────────────────────────────────────────────────────────────────────── */
 
-.container {
+
+/* ── Página: centra la card en pantalla ── */
+.rc-pagina {
+  display: flex;
+  justify-content: center;       /* centrado horizontal */
+  align-items: flex-start;       /* alineado arriba */
+  min-height: 100vh;
+  padding: 2rem 1rem;
+  background-color: #f5f5f4;     /* fondo gris muy suave */
+}
+
+
+/* ── Card principal: el recuadro blanco ── */
+.rc-card {
   width: 100%;
-  max-width: 500px;
-  margin: 40px auto;
-  padding: 30px;
+  max-width: 460px;              /* ancho máximo — no se estira en pantallas grandes */
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 14px;
+  padding: 2rem;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.06); /* sombra muy suave */
+}
 
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0px 4px 10px rgba(0,0,0,0.1);
 
+/* ════════════════════════════════════════════════════════
+   STEPPER — la barra de progreso con los 4 pasos
+   ════════════════════════════════════════════════════════ */
+
+.rc-stepper {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 2rem;
+}
+
+/* Cada paso es un contenedor de columna (círculo + label) */
+.rc-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;                       /* todos los pasos ocupan el mismo ancho */
+  position: relative;
+}
+
+/* Línea conectora entre pasos */
+.rc-step:not(:last-child)::after {
+  content: "";
+  position: absolute;
+  top: 14px;                     /* centrado vertical con el círculo */
+  left: 50%;
+  width: 100%;
+  height: 1px;
+  background: #e5e7eb;           /* gris por defecto */
+  z-index: 0;
+}
+
+/* La línea se vuelve verde cuando el paso fue completado */
+.rc-step.done::after {
+  background: #1D9E75;
+}
+
+
+/* ── Círculo del número de paso ── */
+.rc-circulo {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  font-weight: 500;
+  z-index: 1;                    /* encima de la línea conectora */
+  border: 1px solid #e5e7eb;
+  background: #ffffff;
+  color: #9ca3af;
+}
+
+/* Estado activo: rojo */
+.rc-circulo.active {
+  background: #659dff;
+  color: #ffffff;
+  border-color: #659dff;
+}
+
+/* Estado completado: verde */
+.rc-circulo.done {
+  background: #1D9E75;
+  color: #ffffff;
+  border-color: #1D9E75;
+}
+
+
+/* ── Etiqueta de texto debajo del círculo ── */
+.rc-step-label {
+  font-size: 10px;
+  color: #9ca3af;
+  margin-top: 4px;
   text-align: center;
 }
 
-/* TITULO */
-
-.container h2 {
-  margin-bottom: 25px;
-  color: #333;
+.rc-step-label.active {
+  color: #659dff;
+  font-weight: 600;
 }
 
-/* CAMPOS */
+.rc-step-label.done {
+  color: #1D9E75;
+}
 
-.field {
+
+/* ════════════════════════════════════════════════════════
+   HEADER — título y subtítulo de cada paso
+   ════════════════════════════════════════════════════════ */
+
+.rc-header {
+  margin-bottom: 1.5rem;
+}
+
+.rc-header h2 {
+  font-size: 17px;
+  font-weight: 600;
+  color: #111827;
+  margin: 0 0 3px;
+}
+
+.rc-header p {
+  font-size: 12px;
+  color: #9ca3af;
+  margin: 0;
+}
+
+
+/* ════════════════════════════════════════════════════════
+   CAMPOS DE FORMULARIO
+   ════════════════════════════════════════════════════════ */
+
+/* Contenedor de cada campo: apila label, input y error */
+.rc-campo {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
-
-  margin-bottom: 15px;
+  margin-bottom: 1rem;
 }
 
-/* LABEL */
-
-.field label {
-  font-weight: 500;
+.rc-campo label {
+  font-size: 12px;
+  font-weight: 600;
+  color: #374151;
   margin-bottom: 5px;
 }
 
-/* INPUTS */
-
-.field input {
-
-  width: 100%;
-  padding: 10px;
-
-  border: 1px solid #ccc;
-  border-radius: 6px;
-
-  font-size: 14px;
-}
-
-/* EFECTO CUANDO SELECCIONAS */
-
-.field input:focus {
+/* Estilos base para input de texto y select */
+.rc-campo input[type="text"],
+.rc-campo input[type="email"],
+.rc-campo input[type="tel"],
+.rc-campo input[type="password"],
+.rc-campo select {
+  height: 38px;
+  padding: 0 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 13px;
+  color: #111827;
+  background: #ffffff;
   outline: none;
-  border-color: #f2c200;
-  box-shadow: 0 0 3px rgba(242,194,0,0.5);
+  transition: border-color 0.2s;
+  font-family: inherit;
 }
 
-/* BOTON */
-
-button {
-
-  margin-top: 15px;
-  padding: 10px 25px;
-
-  border: none;
-  border-radius: 6px;
-
-  background:#0a6aa4;
-  color: white;
-  font-weight: bold;
-
-  cursor: pointer;
+.rc-campo input:focus,
+.rc-campo select:focus {
+  border-color: #659dff;        /* borde rojo al hacer foco */
 }
 
-/* HOVER BOTON */
 
-button:hover {
-  background: #0a6aa4;
+/* ── Grid de dos columnas (nombre + apellido) ── */
+.rc-row2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
 }
 
-/* MENSAJES ERROR */
 
-.error {
-  color: red;
-  font-size: 12px;
+/* ── Mensaje de error debajo de un campo ── */
+.rc-error {
+  font-size: 11px;
+  color: #E24B4A;
   margin-top: 3px;
 }
 
-/* MENSAJE EXITO */
 
-.success {
-  margin-top: 15px;
-  color: green;
-  font-weight: bold;
+/* ════════════════════════════════════════════════════════
+   CONTRASEÑA — contador y barra de fortaleza
+   ════════════════════════════════════════════════════════ */
+
+/* Envuelve el input para poder poner el contador encima */
+.rc-pw-wrap {
+  position: relative;
+}
+
+.rc-pw-wrap input {
+  width: 100%;
+  padding-right: 50px;           /* espacio para el contador */
+  box-sizing: border-box;
+}
+
+/* Contador "X/32" flotante en la esquina derecha */
+.rc-contador {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);   /* centrado vertical exacto */
+  font-size: 11px;
+  color: #9ca3af;
+  pointer-events: none;          /* no interfiere con clics */
+}
+
+/* Fondo de la barra de fortaleza */
+.rc-barra-fondo {
+  height: 3px;
+  background: #e5e7eb;
+  border-radius: 2px;
+  margin-top: 6px;
+}
+
+/* Relleno de la barra (ancho y color los pone React con style inline) */
+.rc-barra-relleno {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.3s ease, background-color 0.3s ease; /* animación suave */
+}
+
+/* Etiqueta "Débil / Regular / Buena / Fuerte" junto al label */
+.rc-pw-tag {
+  font-size: 10px;
+  padding: 1px 8px;
+  border-radius: 20px;
+  background: #f3f4f6;
+  color: #374151;
+  margin-left: 6px;
+  font-weight: 400;
+}
+
+
+/* ════════════════════════════════════════════════════════
+   UBICACIÓN — nota informativa
+   ════════════════════════════════════════════════════════ */
+
+.rc-nota {
+  font-size: 11px;
+  color: #9ca3af;
+  margin-top: 0.25rem;
+  line-height: 1.5;
+}
+
+
+/* ════════════════════════════════════════════════════════
+   PASO 3 — Preview / resumen de datos
+   ════════════════════════════════════════════════════════ */
+
+.rc-preview {
+  background: #f9fafb;
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1.25rem;
+}
+
+/* Avatar circular con las iniciales */
+.rc-avatar {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #FCEBEB;           /* rojo claro */
+  color: #659dff;               /* rojo oscuro */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 600;
+  margin: 0 auto 1rem;
+}
+
+/* Cada fila del resumen */
+.rc-fila {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 5px 0;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 12px;
+}
+
+.rc-fila:last-child {
+  border-bottom: none;
+}
+
+.rc-fila-k {
+  color: #6b7280;                /* gris para la etiqueta */
+  flex-shrink: 0;
+}
+
+.rc-fila-v {
+  font-weight: 600;
+  color: #111827;
+  text-align: right;
+  max-width: 58%;
+  word-break: break-all;         /* evita desbordamiento en emails largos */
+}
+
+
+/* ── Checkbox de términos ── */
+.rc-check {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+  cursor: pointer;
+  font-weight: 400 !important;   /* anula el bold del label padre */
+}
+
+.rc-check input {
+  accent-color: #659dff;
+  width: 14px;
+  height: 14px;
+}
+
+
+/* ════════════════════════════════════════════════════════
+   PANTALLA DE ÉXITO
+   ════════════════════════════════════════════════════════ */
+
+.rc-exito {
+  text-align: center;
+  padding: 1.5rem 0;
+}
+
+.rc-exito svg {
+  display: block;
+  margin: 0 auto 14px;
+}
+
+.rc-exito h3 {
+  font-size: 17px;
+  font-weight: 600;
+  color: #111827;
+  margin-bottom: 6px;
+}
+
+.rc-exito p {
+  font-size: 13px;
+  color: #6b7280;
+}
+
+
+/* ════════════════════════════════════════════════════════
+   NAVEGACIÓN — botones Atrás / Siguiente
+   ════════════════════════════════════════════════════════ */
+
+.rc-nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1.5rem;
+  padding-top: 1rem;
+  border-top: 1px solid #f3f4f6;
+}
+
+.rc-step-count {
+  font-size: 12px;
+  color: #9ca3af;
+}
+
+/* Botón secundario (Atrás / Registrar otro) */
+.rc-btn-sec {
+  background: transparent;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  padding: 8px 18px;
+  font-size: 13px;
+  cursor: pointer;
+  color: #6b7280;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+
+.rc-btn-sec:hover {
+  background: #f9fafb;
+}
+
+/* Botón primario (Siguiente / Registrarse) */
+.rc-btn-pri {
+  background: #659dff;
+  border: none;
+  border-radius: 8px;
+  padding: 8px 22px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #ffffff;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.15s;
+}
+
+.rc-btn-pri:hover {
+  background: #8cc4ff;
+}
+
+
+/* ════════════════════════════════════════════════════════
+   RESPONSIVE — pantallas pequeñas (móvil)
+   ════════════════════════════════════════════════════════ */
+
+@media (max-width: 520px) {
+  .rc-card {
+    padding: 1.25rem;            /* menos padding en móvil */
+    border-radius: 10px;
+  }
+
+  /* En móvil, nombre y apellido van uno debajo del otro */
+  .rc-row2 {
+    grid-template-columns: 1fr;
+  }
 }
