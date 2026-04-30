@@ -1,18 +1,7 @@
-// ─────────────────────────────────────────────────────────────────────────────
-// RegistroCliente.tsx
-// Formulario de registro de clientes en 4 pasos.
-// Coloca este archivo en: src/components/RegistroCliente.tsx
-// ─────────────────────────────────────────────────────────────────────────────
 
 import { useState } from "react"
 import "../styles/registro.css"
-
-
-// ─────────────────────────────────────────────────────────────────────────────
-// TIPOS
-// ─────────────────────────────────────────────────────────────────────────────
-
-// Todos los campos del formulario
+// campos del formulario
 interface FormData {
   nombre:          string
   apellido:        string
@@ -50,7 +39,7 @@ const CIUDADES = ["Bogotá", "Medellín", "Cali"]
 
 // Localidades por ciudad — Record<string, string[]> = objeto con clave texto y valor lista
 const LOCALIDADES: Record<string, string[]> = {
-  "Bogotá":   ["Usaquén", "Chapinero", "Suba"],
+  "Bogotá":   ["Usaquén", "Chapinero", "Suba","Engativa"],
   "Medellín": ["El Poblado", "Laureles", "Envigado"],
   "Cali":     ["San Antonio", "El Peñón", "Granada"],
 }
