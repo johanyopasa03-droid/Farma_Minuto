@@ -1,215 +1,133 @@
 import { useState } from "react"
-import "../styles/registro.css"
 
-interface FormData {
+interface FormularioRegistro {
   nombre: string
   email: string
   password: string
-  confirmPassword: string
+  direccion: string
+  aceptaTerminos: boolean
 }
 
-interface Errors {
-  nombre?: string
-  email?: string
-  password?: string
-  confirmPassword?: string
-}
-
-function validate(form: FormData): Errors {
-
-  const errors: Errors = {}
-
-  // Nombre
-  if (!form.nombre.trim()) {
-    errors.nombre = "El nombre es obligatorio"
-  } else if (form.nombre.trim().length < 2) {
-    errors.nombre = "Debe tener mínimo 2 caracteres"
-  }
-
-  // Email
-  if (!form.email.trim()) {
-    errors.email = "El email es obligatorio"
-  } else {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
-    if (!emailRegex.test(form.email)) {
-      errors.email = "Formato de email inválido"
-    }
-  }
-
-  // Password
-  if (!form.password) {
-    errors.password = "La contraseña es obligatoria"
-  } 
-  else if (form.password.length < 8) {
-    errors.password = "Debe tener mínimo 8 caracteres"
-  } 
-  else {
-    const passwordRegex = /^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%#?&.-]).{8,}$/
-
-    if (!passwordRegex.test(form.password)) {
-      errors.password =
-        "Debe tener letras, números y un carácter especial"
-    }
-  }
-
-  // Confirmación
-  if (!form.confirmPassword) {
-    errors.confirmPassword = "Debes confirmar la contraseña"
-  } else if (form.password !== form.confirmPassword) {
-    errors.confirmPassword = "Las contraseñas no coinciden"
-  }
-
-  return errors
-}
-
-export default function Registro() {
-
-  const [form, setForm] = useState<FormData>({
+function Registro() {
+  const [formulario, setFormulario] = useState<FormularioRegistro>({
     nombre: "",
     email: "",
     password: "",
-    confirmPassword: ""
+    direccion: "",
+    aceptaTerminos: false
   })
+  const [mensaje, setMensaje] = useState("")
 
-  const [errors, setErrors] = useState<Errors>({})
-  const [success, setSuccess] = useState(false)
+  /* REQUERIMIENTO 2 - Formulario y controles con estado:
+     En Registro se agrupan los datos en el estado "formulario".
+     Este estado guarda:
+     - cajas de texto: nombre, email y password.
+     - area de texto: direccion.
+     - casilla de seleccion: aceptaTerminos.
+     Al cambiar un campo, cambiarTexto o setFormulario actualizan el estado. */
 
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-
+  const cambiarTexto = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => {
     const { name, value } = e.target
 
-    setForm(prev => ({
-      ...prev,
+    setFormulario((datosActuales) => ({
+      ...datosActuales,
       [name]: value
     }))
-
-    setErrors(prev => ({
-      ...prev,
-      [name]: undefined
-    }))
-
-    setSuccess(false)
   }
 
-  function handleSubmit(e: React.FormEvent) {
-
+  const registrarUsuario = (e: React.FormEvent) => {
     e.preventDefault()
 
-    const validation = validate(form)
-
-    setErrors(validation)
-
-    if (Object.keys(validation).length === 0) {
-
-      setSuccess(true)
-
-      setForm({
-        nombre: "",
-        email: "",
-        password: "",
-        confirmPassword: ""
-      })
-
-    } else {
-      setSuccess(false)
+    if (!formulario.nombre || !formulario.email || !formulario.password) {
+      setMensaje("Completa nombre, email y contrasena")
+      return
     }
+
+    if (!formulario.aceptaTerminos) {
+      setMensaje("Debes aceptar los terminos")
+      return
+    }
+
+    // SEGUNDA ENTREGA - LocalStorage:
+    // Guardamos el usuario registrado para demostrar almacenamiento local.
+    localStorage.setItem("farma_usuario_registrado", JSON.stringify(formulario))
+    setMensaje("Registro guardado correctamente en LocalStorage")
   }
 
   return (
+    <main className="formulario-pagina">
+      <section className="formulario-card">
+        <h1>Registro de usuario</h1>
 
-    <>
-    {/*   <Navbar /> */}
-
-      <div className="container">
-
-        <h2>Registro de Usuario</h2>
-
-        <form onSubmit={handleSubmit} noValidate>
-
-          <div className="field">
-
-            <label>Nombre</label>
-
+        <form onSubmit={registrarUsuario}>
+          <label>
+            Nombre
+            {/* REQUERIMIENTO 2 - Caja de texto controlada por formulario.nombre. */}
             <input
               name="nombre"
               type="text"
-              value={form.nombre}
-              onChange={handleChange}
+              value={formulario.nombre}
+              onChange={cambiarTexto}
             />
+          </label>
 
-            {errors.nombre && (
-              <small className="error">{errors.nombre}</small>
-            )}
-
-          </div>
-
-          <div className="field">
-
-            <label>Email</label>
-
+          <label>
+            Email
+            {/* REQUERIMIENTO 2 - Caja de texto controlada por formulario.email. */}
             <input
               name="email"
               type="email"
-              value={form.email}
-              onChange={handleChange}
+              value={formulario.email}
+              onChange={cambiarTexto}
             />
+          </label>
 
-            {errors.email && (
-              <small className="error">{errors.email}</small>
-            )}
-
-          </div>
-
-          <div className="field">
-
-            <label>Contraseña</label>
-
+          <label>
+            Contrasena
+            {/* REQUERIMIENTO 2 - Caja de texto password controlada por formulario.password. */}
             <input
               name="password"
               type="password"
-              value={form.password}
-              onChange={handleChange}
+              value={formulario.password}
+              onChange={cambiarTexto}
             />
+          </label>
 
-            {errors.password && (
-              <small className="error">{errors.password}</small>
-            )}
+          <label>
+            Direccion
+            {/* REQUERIMIENTO 2 - Area de texto controlada por formulario.direccion. */}
+            <textarea
+              name="direccion"
+              value={formulario.direccion}
+              onChange={cambiarTexto}
+              rows={4}
+            />
+          </label>
 
-          </div>
-
-          <div className="field">
-
-            <label>Confirmar contraseña</label>
-
+          <label className="checkbox">
+            {/* REQUERIMIENTO 2 - Checkbox controlado por formulario.aceptaTerminos. */}
             <input
-              name="confirmPassword"
-              type="password"
-              value={form.confirmPassword}
-              onChange={handleChange}
+              type="checkbox"
+              checked={formulario.aceptaTerminos}
+              onChange={(e) =>
+                setFormulario((datosActuales) => ({
+                  ...datosActuales,
+                  aceptaTerminos: e.target.checked
+                }))
+              }
             />
+            Acepto terminos y condiciones
+          </label>
 
-            {errors.confirmPassword && (
-              <small className="error">
-                {errors.confirmPassword}
-              </small>
-            )}
-
-          </div>
-
-          <button type="submit">
-            Registrarse
-          </button>
-
-          {success && (
-            <div className="success">
-              Registro exitoso ✅
-            </div>
-          )}
-
+          <button type="submit">Registrarse</button>
         </form>
 
-      </div>
-
-    </>
+        {mensaje && <p className="exito">{mensaje}</p>}
+      </section>
+    </main>
   )
 }
+
+export default Registro

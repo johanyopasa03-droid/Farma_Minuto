@@ -1,123 +1,221 @@
-import Producto from "../components/Producto"
+import { useEffect, useState } from "react"
+import AsistenteCompra from "../components/AsistenteCompra"
 import Banner from "../components/Banner"
-import Footer from "../components/footer"
-import "../styles/banner.css"
-import "../styles/productos.css"
+import Carrito from "../components/Carrito"
+import Footer from "../components/Footer"
+import ProductoCard from "../components/ProductoCard"
+import ProductoDetalle from "../components/ProductoDetalle"
+import ZonaFavoritos from "../components/ZonaFavoritos"
+import { obtenerProductosDesdeServidor } from "../services/productosService"
+import type { CarritoItem } from "../types/CarritoItem"
+import type { Producto } from "../types/Producto"
 
 interface Props {
-  agregarAlCarrito: () => void
   busqueda: string
+  carrito: CarritoItem[]
+  agregarAlCarrito: (producto: Producto) => void
+  cambiarCantidadCarrito: (productoId: number, cantidad: number) => void
+  eliminarDelCarrito: (productoId: number) => void
+  vaciarCarrito: () => void
 }
 
-function Home({ agregarAlCarrito, busqueda }: Props) {
+function Home({
+  busqueda,
+  carrito,
+  agregarAlCarrito,
+  cambiarCantidadCarrito,
+  eliminarDelCarrito,
+  vaciarCarrito
+}: Props) {
+  const [productos, setProductos] = useState<Producto[]>([])
+  const [categoria, setCategoria] = useState("Todas")
+  const [soloDisponibles, setSoloDisponibles] = useState(false)
+  const [favoritos, setFavoritos] = useState<Producto[]>([])
+  const [productoSeleccionado, setProductoSeleccionado] = useState<Producto | null>(null)
+  const [mensaje, setMensaje] = useState("Cargando productos...")
 
-  const productos = [
-    {
-      id: 1,
-      nombre: "Acetaminofén",
-      precio: 5000,
-      imagen: "https://walmartni.vtexassets.com/arquivos/ids/557992-800-600?v=638708336934330000&width=800&height=600&aspect=true"
-    },
-    {
-      id: 2,
-      nombre: "Ibuprofeno",
-      precio: 8000,
-      imagen: "https://www.alcer-caceres.org/wp-content/uploads/2020/01/Ibuprofeno.jpg"
-    },
-    {
-      id: 3,
-      nombre: "Jarabe",
-      precio: 12000,
-      imagen: "https://i5.walmartimages.com/seo/Vicks-Jarabe-Cough-and-Congestion-Cold-Liquid-over-the-Counter-Medicine-Cherry-Flavor-8-fl-oz_2c846c11-eebe-4841-bf09-1bac87bab022.8a49c09f9764ca0bf791b8349f1c37ca.jpeg?odnHeight=2000&odnWidth=2000&odnBg=FFFFFF"
+  /* REQUERIMIENTO 2 - Controles de la pantalla Home:
+     En esta pagina se usan controles conectados a variables de estado:
+     - categoria: controla el menu desplegable/select.
+     - soloDisponibles: controla la casilla de seleccion/checkbox.
+     - busqueda: viene desde App.tsx y controla el buscador del Navbar.
+     Estos controles permiten filtrar productos sin recargar la pagina. */
 
-    },
-    {
-      id: 4,
-      nombre: "Vitamina C",
-      precio: 9000,
-      imagen: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTiwu7Kx18XlYzWgG6P8mamF-VfILwYpj5vCA&s"
+  // REQUERIMIENTO 7 - Peticion a servidor web:
+  // Al cargar Home se llama la funcion obtenerProductosDesdeServidor().
+  // Esa funcion usa fetch para consultar una API externa real: https://dummyjson.com.
+  useEffect(() => {
+    obtenerProductosDesdeServidor()
+      .then((datos: Producto[]) => {
+        const productosAdmin = localStorage.getItem("farma_productos_admin")
+        const productosGuardados: Producto[] = productosAdmin
+          ? JSON.parse(productosAdmin)
+          : []
 
-    },
-    {
-      id: 5,
-      nombre: "Complejo B",
-      precio: 25000,
-      imagen: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT79PH4y1QTNDBmBtrQwTEBy1BPqHrNwxG8KQ&s"
-    },
-    {
-      id: 6,
-      nombre: "Protector Solar",
-      precio: 35000,
-      imagen: "https://m.media-amazon.com/images/I/71KeEJHegWL.jpg"
-    },
-    {
-      id: 7,
-      nombre: "Minoxidil",
-      precio: 120000,
-      imagen: "https://beta1.cruzverde.com.co/on/demandware.static/-/Sites-masterCatalog_Colombia/default/dw32b5f414/images/large/574633_1_TRIPACK_MINOXIDIL_5_SOL_TOPX100mL.jpg"
+        // REQUERIMIENTO 7 - Datos recibidos:
+        // "datos" corresponde a la respuesta de la API externa transformada al tipo Producto.
+        // Luego se mezcla con productos guardados localmente desde Admin.
+        //
+        // SEGUNDA ENTREGA - Comunicacion con Admin:
+        // Los productos creados en Admin se mezclan con los productos del fetch.
+        setProductos([...datos, ...productosGuardados])
+        setMensaje("")
+      })
+      .catch(() => {
+        setMensaje("No fue posible cargar los productos")
+      })
+  }, [])
 
-    },
-    {
-      id: 8,
-      nombre: "Enterogermina",
-      precio: 60000,
-      imagen: "https://beta1.cruzverde.com.co/on/demandware.static/-/Sites-masterCatalog_Colombia/default/dwcb04058d/images/large/129907_Enterogermina_Plus_Probiotico_Suspension_Oral_x5_frascos.jpg"
+  // SEGUNDA ENTREGA - LocalStorage:
+  // Recupera favoritos guardados para que no se pierdan al actualizar la pagina.
+  useEffect(() => {
+    const favoritosGuardados = localStorage.getItem("farma_favoritos")
 
-    },
-    {
-      id: 9,
-      nombre: "Amoxixilina",
-      precio: 5000,
-      imagen: "https://beta1.cruzverde.com.co/on/demandware.static/-/Sites-masterCatalog_Colombia/default/dwc2efdb1f/images/large/30143-1-AMOXICILINA-500MG-CAP-CAJ-X-50-GENFAR.jpg"
-    },
-    {
-      id: 10,
-      nombre: "Dolex Forte",
-      precio: 18000,
-      imagen: "https://beta1.cruzverde.com.co/on/demandware.static/-/Sites-masterCatalog_Colombia/default/dw635dfd6d/images/large/560131_1DOLEX_FORTE_NF_(500+65)MG_TAB_REC_CAJ_X_10.jpg"
-    },
-    {
-      id: 11,
-      nombre: "Preservativos",
-      precio: 12000,
-      imagen: "https://beta1.cruzverde.com.co/on/demandware.static/-/Sites-masterCatalog_Colombia/default/dwbe3a64c8/images/large/269336_1_PRESERVATIVO_SENSITIVO_DELGADO_PAQ_X_3_DUREX.jpg"
-
-    },
-    {
-      id: 12,
-      nombre: "Pañales",
-      precio: 29000,
-      imagen: "https://beta1.cruzverde.com.co/on/demandware.static/-/Sites-masterCatalog_Colombia/default/dw88d3afb5/images/large/574983_1_BABYSEC_ULTRAPROTECT_G_9_30.jpg"
-
+    if (favoritosGuardados) {
+      setFavoritos(JSON.parse(favoritosGuardados))
     }
-  ]
-const productosFiltrados = productos.filter(producto =>
-  producto.nombre.toLowerCase().includes(busqueda.toLowerCase())
-)
+  }, [])
+
+  // SEGUNDA ENTREGA - LocalStorage:
+  // Guarda favoritos cada vez que cambia la lista.
+  useEffect(() => {
+    localStorage.setItem("farma_favoritos", JSON.stringify(favoritos))
+  }, [favoritos])
+
+  const categorias = ["Todas", ...new Set(productos.map((producto) => producto.categoria))]
+
+  // SEGUNDA ENTREGA - Filtros:
+  // Se filtra por texto del buscador, por categoria y por casilla de seleccion.
+  const productosFiltrados = productos.filter((producto) => {
+    const coincideBusqueda = producto.nombre
+      .toLowerCase()
+      .includes(busqueda.toLowerCase())
+    const coincideCategoria = categoria === "Todas" || producto.categoria === categoria
+    const coincideDisponible = !soloDisponibles || producto.precio > 0
+
+    return coincideBusqueda && coincideCategoria && coincideDisponible
+  })
+
+  const agregarFavorito = (producto: Producto) => {
+    const yaExiste = favoritos.some((favorito) => favorito.id === producto.id)
+
+    if (!yaExiste) {
+      setFavoritos((favoritosActuales) => [...favoritosActuales, producto])
+    }
+  }
+
+  const eliminarFavorito = (productoId: number) => {
+    setFavoritos((favoritosActuales) =>
+      favoritosActuales.filter((producto) => producto.id !== productoId)
+    )
+  }
+
+  const abrirDetalleProducto = (producto: Producto) => {
+    /* FUNCION PRODUCTO EN GRANDE:
+       Esta funcion guarda en el estado el producto que el usuario selecciono.
+       Al cambiar productoSeleccionado, React muestra el componente ProductoDetalle. */
+    setProductoSeleccionado(producto)
+  }
+
+  const cerrarDetalleProducto = () => {
+    /* FUNCION PRODUCTO EN GRANDE:
+       Limpia el producto seleccionado para cerrar la ventana de detalle. */
+    setProductoSeleccionado(null)
+  }
 
   return (
- 
-    <div>
-<Banner />
-      <div style={{
-        display: "grid",
-        gridTemplateColumns: "repeat(auto-fit, minmax(200px, 3fr))",
-        gap: "20px",
-        padding: "10px"
-      }}>
+    <>
+      <Banner />
 
-        {productosFiltrados.map((p) => (
-          <Producto
-            key={p.id}
-            nombre={p.nombre}
-            precio={p.precio}
-            imagen={p.imagen}
-            agregarAlCarrito={agregarAlCarrito}
-          />
-        ))}
-      </div>
-<Footer/>
-    </div>
+      <main className="contenedor">
+        <AsistenteCompra
+          productos={productos}
+          agregarAlCarrito={agregarAlCarrito}
+          verDetalle={abrirDetalleProducto}
+        />
+
+        <section className="barra-tienda">
+          <div>
+            <span className="etiqueta-seccion">Tienda</span>
+            <h2>Catalogo de productos</h2>
+            <p>
+              Selecciona productos, filtra por categoria y revisa el carrito en el panel derecho.
+            </p>
+          </div>
+
+          <section className="controles">
+            <label>
+              Categoria
+              {/* REQUERIMIENTO 2 - Menu/select con estado:
+                  El usuario elige una categoria y setCategoria actualiza la variable categoria. */}
+              <select value={categoria} onChange={(e) => setCategoria(e.target.value)}>
+                {categorias.map((item) => (
+                  <option key={item} value={item}>
+                    {item}
+                  </option>
+                ))}
+              </select>
+            </label>
+
+            <label className="checkbox">
+              {/* REQUERIMIENTO 2 - Casilla de seleccion con estado:
+                  checked depende de soloDisponibles y onChange actualiza esa variable. */}
+              <input
+                type="checkbox"
+                checked={soloDisponibles}
+                onChange={(e) => setSoloDisponibles(e.target.checked)}
+              />
+              Ver solo disponibles
+            </label>
+          </section>
+        </section>
+
+        <section className="layout-tienda">
+          <div className="catalogo">
+            {mensaje && <p>{mensaje}</p>}
+
+            <div className="productos-grid">
+              {productosFiltrados.map((producto) => (
+                <ProductoCard
+                  key={producto.id}
+                  producto={producto}
+                  agregarAlCarrito={agregarAlCarrito}
+                  agregarFavorito={agregarFavorito}
+                  verDetalle={abrirDetalleProducto}
+                />
+              ))}
+            </div>
+          </div>
+
+          <div className="paneles">
+            <Carrito
+              productosCatalogo={productos}
+              productos={carrito}
+              agregarProducto={agregarAlCarrito}
+              cambiarCantidad={cambiarCantidadCarrito}
+              eliminarProducto={eliminarDelCarrito}
+              vaciarCarrito={vaciarCarrito}
+            />
+            <ZonaFavoritos
+              productos={productos}
+              favoritos={favoritos}
+              agregarFavorito={agregarFavorito}
+              eliminarFavorito={eliminarFavorito}
+            />
+          </div>
+        </section>
+      </main>
+
+      {productoSeleccionado && (
+        <ProductoDetalle
+          producto={productoSeleccionado}
+          agregarAlCarrito={agregarAlCarrito}
+          cerrarDetalle={cerrarDetalleProducto}
+        />
+      )}
+
+      <Footer />
+    </>
   )
 }
 

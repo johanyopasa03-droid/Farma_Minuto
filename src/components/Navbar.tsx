@@ -1,48 +1,61 @@
-import logo from "..//img/Logo-blank.png"
-import "../styles/Navbar.css"
-
+import { Link } from "react-router-dom"
 
 interface Props {
-  carrito: number
   busqueda: string
+  carritoCantidad: number
   setBusqueda: (valor: string) => void
+  usuarioActual: string
+  cerrarSesion: () => void
 }
-function Navbar({ carrito, busqueda, setBusqueda }: Props) {
+
+function Navbar({
+  busqueda,
+  carritoCantidad,
+  setBusqueda,
+  usuarioActual,
+  cerrarSesion
+}: Props) {
   return (
+    <header className="navbar">
+      <Link className="marca" to="/">
+        Farmaminuto
+      </Link>
 
-    <nav
-      style={{
-        textDecoration:"none",
-        background:"#0a6aa4",
-        padding:"15px",
-        display:"flex",
-        justifyContent:"space-between",
-        color:"white"
-      }}>
-      <a href="https://www.uniminuto.edu/" target="blank">  <img src={logo} /> </a>
+      {/* REQUERIMIENTO 2 - Caja de texto con variable de estado:
+          Este input de busqueda es un control manejado por React.
+          Su valor viene del estado "busqueda" creado en App.tsx con useState.
+          Cuando el usuario escribe, onChange ejecuta setBusqueda y actualiza el estado. */}
+      <input
+        className="buscador"
+        type="search"
+        placeholder="Buscar productos"
+        value={busqueda}
+        onChange={(evento) => setBusqueda(evento.target.value)}
+      />
 
-  
-      <div className="buscador">
-        <input type="search" placeholder="Buscar Productos" value={busqueda} onChange={(e)=> setBusqueda(e.target.value)}/>
+      <nav className="menu">
+        {/* SEGUNDA ENTREGA - React Router:
+            Link evita recargar la pagina completa al navegar. */}
+        <Link to="/">Inicio</Link>
+        <Link to="/admin">Admin</Link>
+        <Link to="/registro">Registro</Link>
+        <Link to="/login">Login</Link>
+      </nav>
+
+      <div className="sesion">
+        {/* REQUERIMIENTO 4 - Evento de navegacion:
+            Este boton usa un enlace con ancla (#carrito).
+            Al hacer clic lleva al usuario directamente a la seccion del carrito. */}
+        <a className="contador" href="#carrito">
+          Carrito: {carritoCantidad}
+        </a>
+        {usuarioActual && (
+          <button type="button" onClick={cerrarSesion}>
+            Salir
+          </button>
+        )}
       </div>
-      <div className="options">
-        <a href="/home" style={{color:"white", marginRight:"20px"}}>Inicio</a>
-        <a href="/login">Login</a>
-        <a href="/Registro">Registro</a>
-
-        <span style={{
-          background:"white",
-          color:"#0a7cff",
-          padding:"5px 10px",
-          borderRadius:"20px",
-          fontWeight:"bold"
-          }}>
-            🛒 {carrito}
-        </span>
-      </div>
-
-      
-    </nav>
+    </header>
   )
 }
 

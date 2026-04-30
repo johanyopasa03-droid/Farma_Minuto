@@ -1,11 +1,10 @@
-import "../styles/footer.css"
-
 function Footer() {
-    return (
-        <div className="footer">
-            Footer
-        </div>
-    )
+  return (
+    <footer className="footer">
+      <strong>Farmaminuto</strong>
+      <span>Proyecto academico - Desarrollo basado en plataformas</span>
+    </footer>
+  )
 }
 
 export default Footer

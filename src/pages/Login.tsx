@@ -1,80 +1,114 @@
-import "../styles/login.css"
-import promo from "../img/promo.jpg"
-import { useNavigate } from "react-router-dom"
-import { useState } from "react"
+import { useEffect, useState } from "react"
+import { Link, useNavigate } from "react-router-dom"
 
-export default function Login() {
+interface Props {
+  iniciarSesion: (email: string) => void
+}
+
+function Login({ iniciarSesion }: Props) {
   const navigate = useNavigate()
   const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
+  const [recordarme, setRecordarme] = useState(false)
   const [mensaje, setMensaje] = useState("")
+
+  /* REQUERIMIENTO 2 - Formulario con controles y variables de estado:
+     En Login se usan cajas de texto y una casilla de seleccion.
+     - email controla el input de correo.
+     - password controla el input de contrasena.
+     - recordarme controla el checkbox.
+     - mensaje muestra el resultado de la validacion.
+     Cada control usa value/checked y onChange para mantenerse conectado al estado. */
 
   const usuarios = [
     { email: "admin@drogueria.com", password: "1234", rol: "admin" },
     { email: "cliente@drogueria.com", password: "1234", rol: "cliente" }
   ]
 
+  // SEGUNDA ENTREGA - useEffect + LocalStorage:
+  // Si el usuario marco "recordarme", se precarga el correo al volver.
+  useEffect(() => {
+    const correoRecordado = localStorage.getItem("farma_recordarme")
+
+    if (correoRecordado) {
+      setEmail(correoRecordado)
+      setRecordarme(true)
+    }
+  }, [])
+
   const manejarLogin = (e: React.FormEvent) => {
     e.preventDefault()
 
+    // SEGUNDA ENTREGA - Evento submit:
+    // El formulario valida los datos escritos en cajas de texto controladas.
     const usuario = usuarios.find(
-      u => u.email === email && u.password === password
+      (item) => item.email === email && item.password === password
     )
 
     if (!usuario) {
-      setMensaje("Usuario incorrecto")
+      setMensaje("Usuario o contrasena incorrectos")
       return
     }
 
-    navigate("/home")
+    iniciarSesion(email)
+
+    if (recordarme) {
+      localStorage.setItem("farma_recordarme", email)
+    } else {
+      localStorage.removeItem("farma_recordarme")
+    }
+
+    navigate(usuario.rol === "admin" ? "/admin" : "/")
   }
 
   return (
-    <div className="login-overlay">
-      <div className="login-modal">
+    <main className="formulario-pagina">
+      <section className="formulario-card">
+        <h1>Iniciar sesion</h1>
+        <p>Usuarios de prueba: admin@drogueria.com / cliente@drogueria.com</p>
 
-        <div className="login-left">
-          <img src={promo} alt="Promoción farmacia"/>
-        </div>
-
-        <div className="login-right">
-          <h2>Bienvenido a Farmaminuto</h2>
-
-          <form onSubmit={manejarLogin}>
-
-            <label>Email</label>
+        <form onSubmit={manejarLogin}>
+          <label>
+            Email
+            {/* REQUERIMIENTO 2 - Caja de texto controlada por email. */}
             <input
               type="email"
-              placeholder="Ingresa tu correo"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              placeholder="correo@ejemplo.com"
             />
+          </label>
 
-            <label>Contraseña</label>
+          <label>
+            Contrasena
+            {/* REQUERIMIENTO 2 - Caja de texto tipo password controlada por password. */}
             <input
               type="password"
-              placeholder="Ingresa tu contraseña"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              placeholder="1234"
             />
-            {mensaje && <p style={{color: "red"}}>{mensaje}</p>}
+          </label>
 
-            <button type="submit" className="login-btn">
-              Iniciar sesión
-            </button>
+          <label className="checkbox">
+            {/* REQUERIMIENTO 2 - Checkbox controlado por recordarme. */}
+            <input
+              type="checkbox"
+              checked={recordarme}
+              onChange={(e) => setRecordarme(e.target.checked)}
+            />
+            Recordar usuario en este equipo
+          </label>
 
-          </form>
+          {mensaje && <p className="error">{mensaje}</p>}
 
-          <button className="register-btn">
-            Crear cuenta
-          </button>
+          <button type="submit">Entrar</button>
+        </form>
 
-          <p className="forgot">
-            ¿Olvidaste tu contraseña?
-          </p>
-
-        </div>
-      </div>
-    </div>
+        <Link to="/registro">Crear cuenta nueva</Link>
+      </section>
+    </main>
   )
 }
+
+export default Login
